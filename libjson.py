@@ -12,8 +12,8 @@ def check_libjson(self):
 
     if self.options.libjson:
         self.env.LIBJSON = self.options.libjson
-        self.env.append_unique("CFLAGS_LIBJSON", "-I" + self.env.LIBJSON + '/include')
-        self.env.append_unique("LIBPATH_LIBJSON", self.env.LIBJSON + '/lib')
+        self.env.append_unique("CFLAGS_LIBJSON", "-I" + self.env.LIBJSON)
+        self.env.append_unique("LIBPATH_LIBJSON", self.env.LIBJSON)
         self.end_msg(self.env.LIBJSON)
     else:
         self.end_msg("LIBJSON is not set")
