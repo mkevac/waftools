@@ -25,7 +25,7 @@ def get_install_dir():
     stdout = p.communicate()[0]
 
     if p.returncode == 0:
-        return '-I' + stdout.strip()
+        return stdout.strip()
 
     return ''
 
