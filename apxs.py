@@ -18,6 +18,17 @@ def which(program):
 
     return None
 
+def get_install_dir():
+    p = subprocess.Popen(['apxs', '-q', 'LIBEXECDIR'],
+                           stdout=subprocess.PIPE,
+                           stderr=subprocess.STDOUT, close_fds=False)
+    stdout = p.communicate()[0]
+
+    if p.returncode == 0:
+        return '-I' + stdout.strip()
+
+    return ''
+
 def get_include_flags():
     p = subprocess.Popen(['apxs', '-q', 'INCLUDEDIR'],
                            stdout=subprocess.PIPE,
@@ -39,8 +50,10 @@ def check_apxs(self):
         return False
 
     includes = get_include_flags()
+    install_dir = get_install_dir()
 
     self.env.append_unique("CFLAGS_APXS", includes)
+    self.env.append_unique("INSTALL_DIR", install_dir)
 
     self.end_msg("ok")
 
