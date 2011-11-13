@@ -18,8 +18,8 @@ def which(program):
 
     return None
 
-def get_install_dir():
-    p = subprocess.Popen(['apxs', '-q', 'LIBEXECDIR'],
+def get_install_dir(cfg):
+    p = subprocess.Popen([cfg.env.APXS, '-q', 'LIBEXECDIR'],
                            stdout=subprocess.PIPE,
                            stderr=subprocess.STDOUT, close_fds=False)
     stdout = p.communicate()[0]
@@ -29,8 +29,8 @@ def get_install_dir():
 
     return ''
 
-def get_include_flags():
-    p = subprocess.Popen(['apxs', '-q', 'INCLUDEDIR'],
+def get_include_flags(cfg):
+    p = subprocess.Popen([cfg.env.APXS, '-q', 'INCLUDEDIR'],
                            stdout=subprocess.PIPE,
                            stderr=subprocess.STDOUT, close_fds=False)
     stdout = p.communicate()[0]
@@ -40,8 +40,8 @@ def get_include_flags():
 
     return ''
 
-def get_include_dir():
-    p = subprocess.Popen(['apxs', '-q', 'INCLUDEDIR'],
+def get_include_dir(cfg):
+    p = subprocess.Popen([cfg.env.APXS, '-q', 'INCLUDEDIR'],
                            stdout=subprocess.PIPE,
                            stderr=subprocess.STDOUT, close_fds=False)
     stdout = p.communicate()[0]
@@ -55,14 +55,11 @@ def get_include_dir():
 def check_apxs(self):
     self.start_msg("Checking for apxs")
 
-    if not which('apxs'):
-        self.end_msg("no")
-	self.fatal("apxs could not be found")
-        return False
+    self.find_program('apxs', var='APXS')
 
-    includes = get_include_flags()
-    include_dir = get_include_dir()
-    install_dir = get_install_dir()
+    includes = get_include_flags(self)
+    include_dir = get_include_dir(self)
+    install_dir = get_install_dir(self)
 
     self.env.append_unique("CFLAGS_APXS", includes)
     self.env.append_unique("APXS_INCLUDE_DIR", include_dir)
