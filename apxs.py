@@ -40,6 +40,17 @@ def get_include_flags():
 
     return ''
 
+def get_include_dir():
+    p = subprocess.Popen(['apxs', '-q', 'INCLUDEDIR'],
+                           stdout=subprocess.PIPE,
+                           stderr=subprocess.STDOUT, close_fds=False)
+    stdout = p.communicate()[0]
+
+    if p.returncode == 0:
+        return stdout.strip()
+
+    return ''
+
 @conf
 def check_apxs(self):
     self.start_msg("Checking for apxs")
@@ -50,9 +61,11 @@ def check_apxs(self):
         return False
 
     includes = get_include_flags()
+    include_dir = get_include_dir()
     install_dir = get_install_dir()
 
     self.env.append_unique("CFLAGS_APXS", includes)
+    self.env.append_unique("APXS_INCLUDE_DIR", include_dir)
     self.env.append_unique("INSTALL_DIR", install_dir)
 
     self.end_msg("ok")
