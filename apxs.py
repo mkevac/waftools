@@ -21,7 +21,7 @@ def which(program):
 def get_install_dir(cfg):
     p = subprocess.Popen([cfg.env.APXS, '-q', 'LIBEXECDIR'],
                            stdout=subprocess.PIPE,
-                           stderr=subprocess.STDOUT, close_fds=False)
+                           close_fds=False)
     stdout = p.communicate()[0]
 
     if p.returncode == 0:
@@ -32,7 +32,7 @@ def get_install_dir(cfg):
 def get_include_flags(cfg):
     p = subprocess.Popen([cfg.env.APXS, '-q', 'INCLUDEDIR'],
                            stdout=subprocess.PIPE,
-                           stderr=subprocess.STDOUT, close_fds=False)
+                           close_fds=False)
     stdout = p.communicate()[0]
 
     if p.returncode == 0:
@@ -43,7 +43,7 @@ def get_include_flags(cfg):
 def get_include_dir(cfg):
     p = subprocess.Popen([cfg.env.APXS, '-q', 'INCLUDEDIR'],
                            stdout=subprocess.PIPE,
-                           stderr=subprocess.STDOUT, close_fds=False)
+                           close_fds=False)
     stdout = p.communicate()[0]
 
     if p.returncode == 0:
