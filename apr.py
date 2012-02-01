@@ -18,6 +18,17 @@ def which(program):
 
     return None
 
+def get_compile_flags():
+    p = subprocess.Popen(['apr-1-config', '--cflags', '--cppflags'],
+                           stdout=subprocess.PIPE,
+                           stderr=subprocess.STDOUT, close_fds=False)
+    stdout = p.communicate()[0]
+
+    if p.returncode == 0:
+        return stdout.strip().split()
+
+    return nil
+
 def get_include_flags():
     p = subprocess.Popen(['apr-1-config', '--includes'],
                            stdout=subprocess.PIPE,
@@ -49,9 +60,11 @@ def check_apr(self):
 	self.fatal("apr-1-config could not be found")
         return False
 
+    cflags = get_compile_flags()
     includes = get_include_flags()
     ldflags = get_ld_flags()
 
+    self.env.append_unique("CFLAGS_APR", cflags)
     self.env.append_unique("CFLAGS_APR", includes)
     self.env.append_unique("LINKFLAGS_APR", ldflags)
 
